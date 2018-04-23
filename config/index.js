@@ -10,7 +10,11 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    //代理表 解决跨域问题
+    proxyTable: {
+      //只要一api开头的都调到端口为3000的
+  '/api':'http://localhost:3000',
+    },
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST

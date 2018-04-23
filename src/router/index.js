@@ -12,6 +12,7 @@ const routes=[
   {path:'/list',component:List},
   {path:'/add',component:Add},
   {path:'/personage',component:Personage},
+  {path:'*',redirect:'/home'}
 ]
 export default new VueRouter({
   routes
