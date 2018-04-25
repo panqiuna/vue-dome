@@ -40,21 +40,27 @@
       }).catch(err => {//失败
         console.log(err);
       });
-
-      axios.get('/api/hot').then(res => {
-        this.mambos = res.data
-      }).catch(err => {
-        console.log(err);
-      })
+     this.getHot();
 
     },
 
     components: {MHeader, Swiper, Loading},
-    methods: {},
+    methods: {
+        getHot(){
+          axios.get('/api/hot').then(res => {
+            this.mambos = res.data
+          }).catch(err => {
+            console.log(err);
+          })
+        }
+    },
     computed: {},
     mounted(){
+    },
+    activated(){//缓存后依然会走的函数
+
     }
-  }
+    }
 </script>
 <style scoped lang="less">
   h3 {
