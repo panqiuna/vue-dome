@@ -35,8 +35,12 @@ http.createServer(function (req, res) {
     let id = parseInt(query.id);//转化为数字类型
     if (method === 'GET') {
       //获取一个数据
-      if (id) {//获取一个
-
+      if (id) {//获取一个(修改页)
+        read(function (mambos) {
+          //find（）查找那一个
+          let mambo = mambos.find(item => item.id == id);
+          res.end(JSON.stringify(mambo));
+        })
       } else {
         //获取全部数据   用回调函数传参数
         read(function (mambos) {
@@ -61,13 +65,36 @@ http.createServer(function (req, res) {
         });
       })
     } else if (method === 'PUT') {//修改
+      //拿到id
+      //获取数据
+      let str = '';
+      req.on('data', function (chunk) {
+        str += chunk;
+      })
+      req.on('data', function () {
+        let mambo = JSON.parse(str);
+        //读取内容
+        read(function (mambos) {
+          //循环每一个
+          mambos=mambos.map(item => {
+            if (item.id == id) {
+              return mambo;
+            }
+            return item;
+          });
+          write(mambos,function () {
+            res.end(JSON.stringify(mambo));
+          })
+        })
+      })
 
-
+      //将最新的数据写到json中
+      //响应结束返回修改的那一页
 
     } else if (method === 'DELETE') {//删除
       //先读取
       read(function (mambos) {
-        mambos = mambos.filter(item => item.id !=id);
+        mambos = mambos.filter(item => item.id != id);
         write(mambos, function () {//成功后返回
           res.end(JSON.stringify({}));//直接返回一个空
         })
